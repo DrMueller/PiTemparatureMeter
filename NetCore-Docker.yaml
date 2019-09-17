@@ -3,6 +3,7 @@ name: 1.1$(rev:.r) # build numbering format
 variables:
   BuildConfiguration: 'Release'
   FolderToPack: 'Application'
+  ApplyDockerstack: False
 
 resources:
   repositories:
