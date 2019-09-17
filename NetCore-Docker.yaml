@@ -2,6 +2,7 @@ name: 1.1$(rev:.r) # build numbering format
 
 variables:
   BuildConfiguration: 'Release'
+  ApplyDockerstack: false
   
 resources:
   repositories:
@@ -20,41 +21,9 @@ jobs:
   - template: AzureDevOps/BuildTemplates/NetCore/Steps/Initialize_And_Test.yaml@ALMStuff
     parameters:
       BuildConfiguration: $(BuildConfiguration)
+  - template: AzureDevOps/BuildTemplates/NetCore/Steps/Build_And_Push_Docker.yaml@ALMStuff
+    parameters:
+      ApplyDockerstack: $(ApplyDockerstack)
 
-  - task: YodLabs.VariableTasks.SetVariable.SetVariable@0
-    displayName: 'Set Variable ImageName to $(Build.Repository.Name) with toLowerCase applied'
-    inputs:
-      variableName: ImageName
 
-      value: '$(Build.Repository.Name)'
-
-      transform: toLowerCase
-
-  - task: YodLabs.VariableTasks.SetVariable.SetVariable@0
-    displayName: 'Set Variable ImageName to $(ImageName) with replace applied'
-    inputs:
-      variableName: ImageName
-      value: '$(ImageName)'
-      transform: replace
-      searchValue: '\.'
-      newValue: '-'
-
-  - task: Docker@0
-    displayName: 'Build Docker Image'
-    inputs:
-      containerregistrytype: 'Container Registry'
-      dockerRegistryConnection: DockerHub
-      imageName: '$(ImageName)'
-      additionalImageTags: '$(Build.BuildNumber)'
-      includeLatestTag: true
-
-  - task: Docker@0
-    displayName: 'Push Docker Image'
-    inputs:
-      containerregistrytype: 'Container Registry'
-      dockerRegistryConnection: DockerHub
-      action: 'Push an image'
-      imageName: '$(ImageName)'
-      additionalImageTags: '$(Build.BuildNumber)'
-      includeLatestTag: true
 
