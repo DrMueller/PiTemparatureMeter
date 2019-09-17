@@ -3,9 +3,6 @@ name: 1.1$(rev:.r) # build numbering format
 variables:
   BuildConfiguration: 'Release'
   
-parameters:
-  ApplyDockerstack: False
-
 resources:
   repositories:
   - repository: ALMStuff
@@ -60,17 +57,4 @@ jobs:
       imageName: '$(ImageName)'
       additionalImageTags: '$(Build.BuildNumber)'
       includeLatestTag: true
-
-  - ${{ if eq($(parameters.ApplyDockerstack), true) }}:
-    - task: powershell@2
-      displayName: 'Update DockerStack'
-      inputs:
-        targetType: filePath
-        filePath: './Scripts/Update-Dockerstack.ps1' 
-        arguments: '-repositoryLocalPath $(Build.Repository.LocalPath) -imageName $(ImageName):$(Build.BuildNumber)'
-
-    - task: PublishBuildArtifacts@1
-      displayName: 'Publish DockerStack'
-      inputs:
-        PathtoPublish: 'docker-stack.yml'
 
