@@ -1,4 +1,8 @@
-name: 1.0$(rev:.r) # build numbering format
+name: 1.1$(rev:.r) # build numbering format
+
+variables:
+  BuildConfiguration: 'Release'
+  FolderToPack: 'Application'
 
 resources:
   repositories:
@@ -8,25 +12,12 @@ resources:
     ref: refs/heads/master
     endpoint: GitHub-DrMueller
 
-queue:
-  name: Hosted Ubuntu 1604
-
-variables:
-  BuildConfiguration: 'Release'
-  FolderToPublish: 'Application'
-  ApplyDockerstack: false
-
 jobs:
-- job: 'BuildAndPublishAsArtifact'
-  displayName: 'Build and save zipped Artifact'
+- job: 'BuildAndPublishToNuGet'
+  displayName: 'Build and publish to NuGet'
   pool:
-    name: Default
+    name: 'Default'
   steps:
   - template: AzureDevOps/BuildTemplates/NetCore/Steps/Initialize_And_Test.yaml@ALMStuff
     parameters:
-      buildConfiguration: $(BuildConfiguration)
-  - template: AzureDevOps/BuildTemplates/NetCore/Steps/Publish.yaml@ALMStuff
-    parameters:
       BuildConfiguration: $(BuildConfiguration)
-      FolderToPublish: $(FolderToPublish)
-  - template: AzureDevOps/BuildTemplates/NetCore/Steps/Zip_And_Save_Artifact.yaml@ALMStuff
