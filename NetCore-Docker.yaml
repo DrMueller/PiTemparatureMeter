@@ -1,8 +1,9 @@
 name: 1.0$(rev:.r) # build numbering format
 
 resources:
-- repo: self
-- repository: ALMStuff
+  repositories:
+  - repo: self
+  - repository: ALMStuff
     type: github
     name: DrMueller/ALMStuff
     ref: refs/heads/master
