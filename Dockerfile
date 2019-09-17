@@ -1,3 +1,4 @@
+#!/bin/bash
 FROM mcr.microsoft.com/dotnet/core/sdk:2.2-stretch-arm32v7
 
 RUN apt-get update && apt-get install -y curl python-numpy python-pil 
