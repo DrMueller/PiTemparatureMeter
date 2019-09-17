@@ -2,7 +2,6 @@ name: 1.1$(rev:.r) # build numbering format
 
 variables:
   BuildConfiguration: 'Release'
-  FolderToPack: 'Application'
   ApplyDockerstack: False
 
 resources:
@@ -60,7 +59,7 @@ jobs:
       additionalImageTags: '$(Build.BuildNumber)'
       includeLatestTag: true
 
-  - ${{ if eq(ApplyDockerstack, true) }}:
+  - ${{ if eq($(ApplyDockerstack), true) }}:
     - task: powershell@2
       displayName: 'Update DockerStack'
       inputs:
