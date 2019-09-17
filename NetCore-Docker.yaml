@@ -3,6 +3,7 @@ name: 1.1$(rev:.r) # build numbering format
 variables:
   BuildConfiguration: 'Release'
   ApplyDockerstack: false
+  FolderToPublish: 'Application'
   
 resources:
   repositories:
@@ -21,6 +22,11 @@ jobs:
   - template: AzureDevOps/BuildTemplates/NetCore/Steps/Initialize_And_Test.yaml@ALMStuff
     parameters:
       BuildConfiguration: $(BuildConfiguration)
+  - template: AzureDevOps/BuildTemplates/NetCore/Steps/Publish.yaml@ALMStuff
+    parameters:
+      BuildConfiguration: $(BuildConfiguration)
+      FolderToPublish: $(FolderToPublish)
+      PublishSubPath: 'DockerContent'
   - template: AzureDevOps/BuildTemplates/NetCore/Steps/Build_And_Push_Docker.yaml@ALMStuff
     parameters:
       ApplyDockerstack: $(ApplyDockerstack)
