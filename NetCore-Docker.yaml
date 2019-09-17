@@ -16,7 +16,7 @@ jobs:
 - job: 'BuildAndPublishToNuGet'
   displayName: 'Build and publish to NuGet'
   pool:
-    name: 'Default'
+    name: Hosted Ubuntu 1604
   steps:
   - template: AzureDevOps/BuildTemplates/NetCore/Steps/Initialize_And_Test.yaml@ALMStuff
     parameters:
