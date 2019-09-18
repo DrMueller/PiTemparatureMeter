@@ -20,9 +20,9 @@ namespace Mmu.Ptm
 
             var senseHatFactory = serviceLocator.GetService<ISenseHatFactory>();
             var senseHat = senseHatFactory.Create();
-
-            using (var timer = new Timer(1000))
+            using (var timer = new Timer(10000))
             {
+                ReadAndShowTemperature(senseHat);
                 timer.Elapsed += (object sender, ElapsedEventArgs e) => ReadAndShowTemperature(senseHat);
                 timer.Start();
                 Console.ReadKey();
@@ -34,7 +34,7 @@ namespace Mmu.Ptm
             var task = Task.Run(async () =>
             {
                 var temparature = await senseHat.TemparatureSensor.ReadTemparature();
-                await senseHat.LedMatrix.ShowMessage(temparature.AsDescription());
+                await senseHat.LedMatrix.ShowMessage(temparature.AsDescription(), 0.2f);
             });
 
             Task.WaitAll(task);
