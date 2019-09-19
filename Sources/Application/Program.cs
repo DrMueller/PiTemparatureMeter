@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using Mmu.Mlh.RaspberryPi.Areas.SenseHats.Models;
+using Mmu.Mlh.RaspberryPi.Areas.SenseHats.Models.LedMatrixs;
 using Mmu.Mlh.RaspberryPi.Areas.SenseHats.Services;
 using Mmu.Mlh.ServiceProvisioning.Areas.Initialization.Models;
 using Mmu.Mlh.ServiceProvisioning.Areas.Initialization.Services;
@@ -19,20 +20,22 @@ namespace Mmu.Ptm
 
             var senseHatFactory = serviceLocator.GetService<ISenseHatFactory>();
             var senseHat = senseHatFactory.Create();
+            var yellow = new RgbColor(255, 231, 14);
+            var darkBlue = new RgbColor(4, 0, 129);
 
             while (true)
             {
-                ReadAndShowTemperature(senseHat);
+                ReadAndShowTemperature(senseHat, yellow, darkBlue);
                 Thread.Sleep(10000);
             }
         }
 
-        private static void ReadAndShowTemperature(SenseHat senseHat)
+        private static void ReadAndShowTemperature(SenseHat senseHat, RgbColor foreground, RgbColor background)
         {
             var task = Task.Run(async () =>
             {
                 var temparature = await senseHat.TemparatureSensor.ReadTemparature();
-                await senseHat.LedMatrix.ShowMessage(temparature.AsDescription(), 0.2f);
+                await senseHat.LedMatrix.ShowMessage(temparature.AsDescription(), 0.2f, foreground, background);
             });
 
             Task.WaitAll(task);
