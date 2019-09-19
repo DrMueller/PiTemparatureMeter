@@ -25,7 +25,8 @@ jobs:
   - template: AzureDevOps/BuildTemplates/NetCore/Steps/Publish.yaml@ALMStuff
     parameters:
       BuildConfiguration: $(BuildConfiguration)
-      FolderToPublish: $(FolderToPublish)
+      FolderToPublish: $(FolderToPublish)/DockerContent
+      PublishPath: $(Build.Repository.LocalPath)
   - template: AzureDevOps/BuildTemplates/NetCore/Steps/Build_And_Push_Docker.yaml@ALMStuff
     parameters:
       ApplyDockerstack: $(ApplyDockerstack)
