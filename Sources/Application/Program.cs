@@ -21,11 +21,11 @@ namespace Mmu.Ptm
             var senseHatFactory = serviceLocator.GetService<ISenseHatFactory>();
             var senseHat = senseHatFactory.Create();
             var yellow = new RgbColor(255, 231, 14);
-            var darkBlue = new RgbColor(4, 0, 129);
+            var black = RgbColor.CreateBlack();
 
             while (true)
             {
-                ReadAndShowTemperature(senseHat, yellow, darkBlue);
+                ReadAndShowTemperature(senseHat, yellow, black);
                 Thread.Sleep(10000);
             }
         }
