@@ -1,6 +1,5 @@
-﻿using System;
+﻿using System.Threading;
 using System.Threading.Tasks;
-using System.Timers;
 using Mmu.Mlh.RaspberryPi.Areas.SenseHats.Models;
 using Mmu.Mlh.RaspberryPi.Areas.SenseHats.Services;
 using Mmu.Mlh.ServiceProvisioning.Areas.Initialization.Models;
@@ -20,12 +19,11 @@ namespace Mmu.Ptm
 
             var senseHatFactory = serviceLocator.GetService<ISenseHatFactory>();
             var senseHat = senseHatFactory.Create();
-            using (var timer = new Timer(10000))
+
+            while (true)
             {
                 ReadAndShowTemperature(senseHat);
-                timer.Elapsed += (object sender, ElapsedEventArgs e) => ReadAndShowTemperature(senseHat);
-                timer.Start();
-                Console.ReadKey();
+                Thread.Sleep(10000);
             }
         }
 
